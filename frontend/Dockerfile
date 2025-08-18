@@ -9,6 +9,10 @@ RUN npm install
 
 COPY . .
 
+# Accept the API URL as a build argument and set it as an environment variable
+ARG PRIVATE_API_BASE_URL
+ENV PRIVATE_API_BASE_URL=$PRIVATE_API_BASE_URL
+
 RUN npm run build
 
 # final stage

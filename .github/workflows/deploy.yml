@@ -35,5 +35,8 @@ jobs:
       
       - name: Build and push frontend image
         run: |
-          docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }} ./frontend
+          docker build \
+            --build-arg PRIVATE_API_BASE_URL=${{ secrets.PRIVATE_API_BASE_URL }} \
+            -t ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }} \
+            ./frontend
           docker push ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
