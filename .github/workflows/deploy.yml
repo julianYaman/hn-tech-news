@@ -32,6 +32,7 @@ jobs:
         run: |
           docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }} ./backend
           docker push ${{ env.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
+          docker push ${{ env.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
       
       - name: Build and push frontend image
         run: |
@@ -40,3 +41,4 @@ jobs:
             -t ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }} \
             ./frontend
           docker push ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
+          docker push ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
