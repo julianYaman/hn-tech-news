@@ -12,6 +12,7 @@
 /frontend/.svelte-kit
 /frontend/build
 /frontend/dist
+/frontend/.env
 
 # OS-specific
 .DS_Store
