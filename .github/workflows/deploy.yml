@@ -30,7 +30,8 @@ jobs:
 
       - name: Build and push backend image
         run: |
-          docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }} ./backend
+          docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }} \
+            -t ${{ env.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest ./backend
           docker push ${{ env.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
           docker push ${{ env.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
       
@@ -39,6 +40,7 @@ jobs:
           docker build \
             --build-arg PRIVATE_API_BASE_URL=${{ secrets.PRIVATE_API_BASE_URL }} \
             -t ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }} \
+            -t ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest \
             ./frontend
           docker push ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
           docker push ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
