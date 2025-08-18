@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary-accent: #FF6600;
+    --color-secondary-accent: #1E88E5;
+    --color-highlight-cta: #FFD166;
+    --color-background-light: #F9FAFB;
+    --color-background-dark-sections: #F0F4F8;
+    --color-background-card: #FFFFFF;
+    --color-primary-text: #222222;
+    --color-secondary-text: #555555;
+    --color-border: #E5E7EB;
+    --font-sans: 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"';
+  }
+
+  .dark {
+    --color-primary-accent: #FF6600;
+    --color-secondary-accent: #1E88E5;
+    --color-highlight-cta: #FFD166;
+    --color-background-light: #111827;
+    --color-background-dark-sections: #1F2937;
+    --color-background-card: #374151;
+    --color-primary-text: #F9FAFB;
+    --color-secondary-text: #D1D5DB;
+    --color-border: #4B5563;
+    --font-sans: 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"';
+  }
+
+  
+}
