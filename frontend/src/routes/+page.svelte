@@ -11,7 +11,7 @@
   $: remainingStories = data.stories?.slice(5);
 </script>
 
-<div class="bg-[var(--color-background-light)] min-h-screen flex flex-col font-sans">
+<div class="min-h-screen flex flex-col">
   <Header />
 
   <main class="container mx-auto p-4 flex-grow">

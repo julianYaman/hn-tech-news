@@ -1,5 +1,6 @@
 import { writable, get } from 'svelte/store';
 import { bookmarksDB } from '$lib/db';
+import { toast } from '$lib/stores/toast';
 
 
 const createBookmarkStore = () => {
@@ -28,6 +29,7 @@ const createBookmarkStore = () => {
     if (isBookmarked) {
       await bookmarksDB.delete(story.id);
       set(currentBookmarks.filter(b => b.id !== story.id));
+      toast.show('Bookmark removed', 'info');
     } else {
       const newBookmark = {
         id: story.id,
@@ -39,6 +41,7 @@ const createBookmarkStore = () => {
       };
       await bookmarksDB.put(newBookmark);
       set([...currentBookmarks, newBookmark]);
+      toast.show('Bookmark saved!', 'success');
     }
   }
 
@@ -48,6 +51,7 @@ const createBookmarkStore = () => {
     if (!exists) return;
     await bookmarksDB.delete(id);
     set(currentBookmarks.filter(b => b.id !== id));
+    toast.show('Bookmark removed', 'info');
   }
 
   async function add(story) {
@@ -63,6 +67,7 @@ const createBookmarkStore = () => {
     };
     await bookmarksDB.put(newBookmark);
     set([...currentBookmarks, newBookmark]);
+    toast.show('Bookmark saved!', 'success');
   }
 
   function isBookmarked(id) {

@@ -3,7 +3,6 @@
   import Footer from '../../lib/components/Footer.svelte';
   import BookmarkStoryListItem from '../../lib/components/BookmarkStoryListItem.svelte';
   import { bookmarks } from '$lib/stores/bookmarks.js';
-  export let data;
 
   let bookmarkedStories = [];
   $: bookmarks.subscribe(bm => {
@@ -15,7 +14,7 @@
   }
 </script>
 
-<div class="bg-[var(--color-background-light)] min-h-screen flex flex-col font-sans">
+<div class="min-h-screen flex flex-col">
   <Header />
 
   <main class="container mx-auto p-4 flex-grow">

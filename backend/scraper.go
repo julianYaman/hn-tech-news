@@ -19,9 +19,9 @@ func getOGData(storyUrl string) (string, string, error) {
 
 	// Be a polite scraper: identify the application and provide a URL.
 	// Change the string below if you want a different identifier or contact URL.
-	req.Header.Set("User-Agent", "hn-news-page/1.0 (+https://hn.yamanlabs.com)")
+	req.Header.Set("User-Agent", customUserAgent)
 
-	res, err := http.DefaultClient.Do(req)
+	res, err := httpClient.Do(req)
 	if err != nil {
 		LogWarn("Failed to fetch URL %s: %v", storyUrl, err)
 		return "", "", err

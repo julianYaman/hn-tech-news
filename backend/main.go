@@ -26,17 +26,30 @@ type EnrichedStory struct {
 	Story
 	OGImage       string `json:"ogImage"`
 	OGDescription string `json:"ogDescription"`
+	Summary       string `json:"summary,omitempty"`
+	ArticleText   string `json:"-"` // Don't send full text to client
 }
 
 const (
-	hnBaseURL = "https://hacker-news.firebaseio.com/v0"
+	hnBaseURL       = "https://hacker-news.firebaseio.com/v0"
+	customUserAgent = "yamanlabs-hn/1.0 (+https://hn.yamanlabs.com)"
 )
+
+var httpClient = &http.Client{
+	Timeout: 10 * time.Second,
+}
 
 var storyCache *Cache
 
 func getTopStoryIDs() ([]int, error) {
 	LogComponent("HN_API", "Fetching top story IDs")
-	resp, err := http.Get(fmt.Sprintf("%s/topstories.json", hnBaseURL))
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/topstories.json", hnBaseURL), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("User-Agent", customUserAgent)
+
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +107,9 @@ func refreshCache() {
 		}
 
 		if existingStory, found := storyCache.Get(id); found && existingStory.URL == story.URL {
-			LogInfo("Story %d already in cache and URL unchanged, reusing", id)
+			LogInfo("Story %d already in cache and URL unchanged, reusing OG data and updating stats", id)
+			existingStory.Score = story.Score
+			existingStory.Descendants = story.Descendants
 			storyCache.Set(id, existingStory)
 			continue
 		}
@@ -134,6 +149,7 @@ func main() {
 	server := &http.Server{Addr: ":8080"}
 
 	http.Handle("/api/top", LoggingMiddleware(http.HandlerFunc(topStoriesHandler)))
+	http.Handle("/api/summarize", LoggingMiddleware(rateLimitMiddleware(http.HandlerFunc(summarizeHandler))))
 
 	go func() {
 		LogInfo("Server starting on :8080")

@@ -1,11 +1,36 @@
 <script>
   import { generatePlaceholder, getDomain, timeAgo } from '$lib/utils.js';
   import { bookmarks, toggleBookmark } from '$lib/stores/bookmarks.js';
+  import { getSummary } from '$lib/api.js';
   export let story;
 
   $: imageUrl = story.ogImage || generatePlaceholder(story.title, 800, 400);
   $: domain = getDomain(story.url);
   $: isBookmarked = $bookmarks.some(b => b.id === story.id);
+
+  let summary = null;
+  let isSummaryVisible = false;
+  let isLoadingSummary = false;
+  let error = null;
+
+  async function handleSummaryToggle() {
+    if (summary || error) {
+      isSummaryVisible = !isSummaryVisible;
+      return;
+    }
+    isLoadingSummary = true;
+    error = null;
+    try {
+      const result = await getSummary(story.id);
+      summary = result.summary;
+      isSummaryVisible = true;
+    } catch (e) {
+      error = e.message;
+      isSummaryVisible = true;
+    } finally {
+      isLoadingSummary = false;
+    }
+  }
 </script>
 
 <div class="bg-[var(--color-background-card)] rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
@@ -29,6 +54,21 @@
       {/if}
     </div>
   </a>
+
+  <!-- Summary Section -->
+  <div class="px-6 pb-6">
+    {#if isSummaryVisible && summary}
+      <div class="text-base p-4 bg-[var(--color-background-dark-sections)] rounded-md border-l-4 border-[var(--color-secondary-accent)]">
+        <p class="font-semibold text-lg mb-1">TL;DR</p>
+        <p class="text-[var(--color-secondary-text)] whitespace-pre-line">{summary}</p>
+      </div>
+    {:else if isLoadingSummary}
+      <div class="text-base p-4 bg-[var(--color-background-dark-sections)] rounded-md animate-pulse">Loading summary...</div>
+    {:else if isSummaryVisible && error}
+      <div class="text-base p-4 bg-red-100 text-red-700 rounded-md">{error}</div>
+    {/if}
+  </div>
+
   <div class="p-6 pt-0">
     <div class="text-sm text-[var(--color-secondary-text)] font-medium flex items-center space-x-3 border-t border-[var(--color-border)] pt-4">
       <span class="font-semibold">{story.score} points</span>
@@ -39,14 +79,28 @@
         </svg>
         <span>{story.descendants}</span>
       </a>
-  <button
-    on:click|stopPropagation={() => toggleBookmark({ ...story, ogImage: imageUrl })}
-    class="ml-auto text-[var(--color-secondary-text)] hover:text-[var(--color-primary-accent)] transition-colors"
-  >
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="{$bookmarks.some(b => b.id === story.id) ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-        </svg>
-      </button>
+
+      <!-- Button Group -->
+      <div class="ml-auto flex items-center space-x-4">
+        {#if !isLoadingSummary}
+        <button on:click|stopPropagation={handleSummaryToggle} title={isSummaryVisible ? 'Hide Summary' : 'Generate AI Summary'} class="flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-semibold text-white transition-transform hover:scale-105" style="background-color: var(--color-secondary-accent);">
+          {#if isSummaryVisible}
+            <span>🙈</span>
+            <span>Hide</span>
+          {:else}
+            <span>💡</span>
+            <span>TL;DR</span>
+          {/if}
+        </button>
+        {/if}
+
+        <button on:click|stopPropagation={() => toggleBookmark({ ...story, ogImage: imageUrl })} class="text-[var(--color-secondary-text)] hover:text-[var(--color-primary-accent)] transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="{$bookmarks.some(b => b.id === story.id) ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg>
+        </button>
+      </div>
+
       {#if story.time}
         <span class="text-gray-400">•</span>
         <span>{timeAgo(story.time)}</span>
