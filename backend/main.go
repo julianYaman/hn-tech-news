@@ -35,10 +35,6 @@ const (
 	customUserAgent = "yamanlabs-hn/1.0 (+https://hn.yamanlabs.com)"
 )
 
-var httpClient = &http.Client{
-	Timeout: 10 * time.Second,
-}
-
 var storyCache *Cache
 
 func getTopStoryIDs() ([]int, error) {
@@ -49,7 +45,7 @@ func getTopStoryIDs() ([]int, error) {
 	}
 	req.Header.Set("User-Agent", customUserAgent)
 
-	resp, err := httpClient.Do(req)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}

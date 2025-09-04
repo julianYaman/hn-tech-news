@@ -18,6 +18,10 @@ func rateLimitMiddleware(next http.Handler) http.Handler {
 		// In a real app behind a reverse proxy, you would get the real IP
 		// from the X-Forwarded-For header.
 		ip := r.RemoteAddr
+
+		// Log every request attempt to the summarize endpoint
+		LogComponent("RATE_LIMITER", "Request received for %s from IP: %s", r.URL.Path, ip)
+
 		mu.Lock()
 		// Check if the visitor has a limiter yet
 		if _, found := visitors[ip]; !found {

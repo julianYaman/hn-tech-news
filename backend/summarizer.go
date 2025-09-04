@@ -5,10 +5,15 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/go-shiori/go-readability"
 	"google.golang.org/genai"
 )
+
+var summarizerClient = &http.Client{
+	Timeout: 10 * time.Second,
+}
 
 func generateSummary(articleText string) (string, error) {
 	LogComponent("AI", "Generating summary using Google Gemini")
@@ -62,7 +67,7 @@ func extractArticleText(articleURL string) (string, error) {
 	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
 
-	resp, err := httpClient.Do(req)
+	resp, err := summarizerClient.Do(req)
 	if err != nil {
 		return "", err
 	}

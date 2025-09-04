@@ -4,9 +4,14 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 )
+
+var scraperClient = &http.Client{
+	Timeout: 30 * time.Second,
+}
 
 func getOGData(storyUrl string) (string, string, error) {
 	LogComponent("SCRAPER", "Scraping %s for OG data", storyUrl)
@@ -21,7 +26,7 @@ func getOGData(storyUrl string) (string, string, error) {
 	// Change the string below if you want a different identifier or contact URL.
 	req.Header.Set("User-Agent", customUserAgent)
 
-	res, err := httpClient.Do(req)
+	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		LogWarn("Failed to fetch URL %s: %v", storyUrl, err)
 		return "", "", err
