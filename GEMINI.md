@@ -28,7 +28,7 @@ When writing code, you will:
 
 # Project Brief: Tech News Aggregator
 
-**Goal:** Build a web application to display top tech news from the Hacker News API, styled in a clean, modern way inspired by The Verge/TechCrunch.
+**Goal:** Build a web application to display top tech news from the Hacker News API.
 
 ## Stack
 - **Frontend:** SvelteKit + TailwindCSS (@tailwindcss/typography included)
@@ -83,6 +83,5 @@ Ignore node_modules and dist folders. These are not part of the project and shou
 ## Deliverables
 - Go backend with modular files (`main.go`, `scraper.go`, `cache.go`).
 - SvelteKit frontend with TailwindCSS setup.
-- Dockerfiles, `docker-compose.yml`, and Traefik config.
 - A minimal, attractive UI following the specified color palette.
 - Clear instructions to run the application locally and in production.
