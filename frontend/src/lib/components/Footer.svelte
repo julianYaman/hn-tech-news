@@ -7,6 +7,6 @@
             <a href="https://ai.google.dev/" target="_blank" rel="noopener noreferrer" class="text-[var(--color-highlight-cta)] hover:underline">Google Gemini</a>,
             and <a href="https://tailwindcss.com/" target="_blank" rel="noopener noreferrer" class="text-[var(--color-highlight-cta)] hover:underline">Tailwind CSS</a>.
         Gradient images from <a href="https://colorr.me" target="_blank" rel="noopener noreferrer" class="text-[var(--color-highlight-cta)] hover:underline">colorr.me</a>.</p>
-        <p class="mt-2 text-xs">Data from the Hacker News API.</p>
+        <p class="mt-2 text-xs">See <a href="https://status.yaman.pro" target="_blank" rel="noopener noreferrer" class="text-[var(--color-highlight-cta)] hover:underline">status page</a> for uptime information.</p>
     </div>
 </footer>
