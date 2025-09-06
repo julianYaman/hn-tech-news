@@ -79,6 +79,10 @@
         </svg>
         <span>{story.descendants}</span>
       </a>
+      {#if story.time}
+        <span class="text-gray-400">•</span>
+        <span>{timeAgo(story.time)}</span>
+      {/if}
 
       <!-- Button Group -->
       <div class="ml-auto flex items-center space-x-4">
@@ -100,11 +104,6 @@
           </svg>
         </button>
       </div>
-
-      {#if story.time}
-        <span class="text-gray-400">•</span>
-        <span>{timeAgo(story.time)}</span>
-      {/if}
     </div>
   </div>
 </div>
