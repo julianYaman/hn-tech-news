@@ -76,7 +76,7 @@
     <!-- Button Group -->
     <div class="ml-auto flex items-center space-x-2">
       {#if !isLoadingSummary}
-        <button on:click|stopPropagation={handleSummaryToggle} title={isSummaryVisible ? 'Hide Summary' : 'Generate AI Summary'} class="flex items-center justify-center h-8 w-8 rounded-full text-white transition-transform hover:scale-105" style="background-color: var(--color-secondary-accent);">
+        <button on:click|stopPropagation={handleSummaryToggle} title={isSummaryVisible ? 'Hide Summary' : 'Generate AI Summary'} class="flex items-center justify-center h-8 w-8 rounded-full text-white transition-transform hover:scale-105" style="background-color: var({isSummaryVisible ? '--color-secondary-text' : '--color-secondary-accent'});">
           <span>{isSummaryVisible ? '🙈' : '💡'}</span>
         </button>
       {/if}

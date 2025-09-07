@@ -37,7 +37,7 @@
 
 <div class="block bg-[var(--color-background-card)] rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full flex flex-col">
   <a href={story.url} target="_blank" rel="noopener noreferrer" class="block group flex-grow">
-    <div class="aspect-video overflow-hidden">
+    <div class="aspect-video overflow-hidden hidden md:block">
       <img src={imageUrl} alt={story.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out">
     </div>
     <div class="p-5">
@@ -84,7 +84,7 @@
       <div class="ml-auto flex items-center space-x-2">
         <!-- Summarize/Hide Button -->
         {#if !isLoadingSummary}
-        <button on:click|stopPropagation={handleSummaryToggle} title={isSummaryVisible ? 'Hide Summary' : 'Generate AI Summary'} class="flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-semibold text-white transition-transform hover:scale-105" style="background-color: var(--color-secondary-accent);">
+        <button on:click|stopPropagation={handleSummaryToggle} title={isSummaryVisible ? 'Hide Summary' : 'Generate AI Summary'} class="flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-semibold text-white transition-transform hover:scale-105" style="background-color: var({isSummaryVisible ? '--color-secondary-text' : '--color-secondary-accent'});">
           {#if isSummaryVisible}
             <span>🙈</span>
             <span>Hide</span>

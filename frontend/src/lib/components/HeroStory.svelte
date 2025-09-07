@@ -41,8 +41,8 @@
     <span>Today's Top Story</span>
   </div>
   <a href={story.url} target="_blank" rel="noopener noreferrer" class="block group">
-    <div class="overflow-hidden">
-      <img src={imageUrl} alt={`Image for ${story.title}`} class="w-full h-[400px] object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out">
+    <div class="aspect-video overflow-hidden">
+      <img src={imageUrl} alt={`Image for ${story.title}`} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out">
     </div>
     <div class="p-6">
   <h2 class="text-3xl font-extrabold mb-2 leading-tight text-[var(--color-primary-text)] group-hover:text-[var(--color-primary-accent)] transition-colors">{story.title}</h2>
@@ -87,7 +87,7 @@
       <!-- Button Group -->
       <div class="ml-auto flex items-center space-x-4">
         {#if !isLoadingSummary}
-        <button on:click|stopPropagation={handleSummaryToggle} title={isSummaryVisible ? 'Hide Summary' : 'Generate AI Summary'} class="flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-semibold text-white transition-transform hover:scale-105" style="background-color: var(--color-secondary-accent);">
+        <button on:click|stopPropagation={handleSummaryToggle} title={isSummaryVisible ? 'Hide Summary' : 'Generate AI Summary'} class="flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-semibold text-white transition-transform hover:scale-105" style="background-color: var({isSummaryVisible ? '--color-secondary-text' : '--color-secondary-accent'});">
           {#if isSummaryVisible}
             <span>🙈</span>
             <span>Hide</span>

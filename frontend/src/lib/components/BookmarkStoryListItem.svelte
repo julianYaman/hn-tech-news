@@ -29,7 +29,7 @@
 
 <div class="block bg-[var(--color-background-card)] rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full flex flex-col">
   <a href={bookmark.url} target="_blank" rel="noopener noreferrer" class="block group flex-grow">
-    <div class="aspect-video overflow-hidden">
+    <div class="aspect-video overflow-hidden hidden md:block">
       <img src={imageUrl} alt={bookmark.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out">
     </div>
     <div class="p-5">

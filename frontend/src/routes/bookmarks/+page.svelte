@@ -17,7 +17,7 @@
 <div class="min-h-screen flex flex-col">
   <Header />
 
-  <main class="container mx-auto p-4 flex-grow">
+  <main class="max-w-7xl mx-auto p-4 flex-grow">
     <h1 class="text-3xl font-bold mb-6 text-[var(--color-primary-text)] border-b-4 border-[var(--color-secondary-accent)] pb-3">Your Bookmarks</h1>
 
     <div class="bg-[var(--color-background-dark-sections)] border-l-4 border-[var(--color-secondary-accent)] text-[var(--color-secondary-text)] p-4 rounded-md my-6" role="alert">

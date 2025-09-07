@@ -1,19 +1,42 @@
 <script>
   import { theme } from '$lib/stores/theme.js';
   import { bookmarks } from '$lib/stores/bookmarks.js';
+  import { fly } from 'svelte/transition';
+  import { onMount } from 'svelte';
+
+  let menuOpen = false;
+  let isMobile = false;
 
   function toggleTheme() {
     theme.setTheme($theme === 'light' ? 'dark' : 'light');
   }
+
+  onMount(() => {
+    const mql = window.matchMedia('(max-width: 767px)');
+    isMobile = mql.matches;
+    const listener = (e) => {
+      isMobile = e.matches;
+      if (!isMobile) {
+        menuOpen = false; // Close menu when switching to desktop view
+      }
+    };
+    mql.addEventListener('change', listener);
+    
+    return () => {
+      mql.removeEventListener('change', listener);
+    }
+  });
 </script>
 
-<header class="bg-[var(--color-background-card)] shadow-sm">
-  <div class="container mx-auto px-4 py-5 flex justify-between items-center">
+<header class="bg-[var(--color-background-card)] shadow-sm sticky top-0 z-20">
+  <div class="max-w-7xl mx-auto px-4 py-5 flex justify-between items-center">
     <a href="/" class="flex items-center space-x-2">
-      <span class="bg-[var(--color-primary-accent)] text-white font-bold text-xl rounded-md px-2 py-1">HN</span>
-      <h1 class="text-2xl font-bold text-[var(--color-primary-text)]">Tech News</h1>
+      <span class="bg-[var(--color-primary-accent)] text-white font-bold text-xl rounded-md px-2 py-1">hn30</span>
+      <h1 class="text-2xl font-bold text-[var(--color-primary-text)]">tech news</h1>
     </a>
-  <nav class="flex items-center space-x-6">
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center space-x-6">
       <a href="https://yaman.pro" class="text-[var(--color-secondary-text)] hover:text-[var(--color-primary-accent)] transition-colors" target="_blank" rel="noopener noreferrer">yaman.pro</a>
       <a href="https://yaman.pro/blog" class="text-[var(--color-secondary-text)] hover:text-[var(--color-primary-accent)] transition-colors" target="_blank" rel="noopener noreferrer">Blog</a>
       <a href="https://github.com/julianyaman/hn-tech-news" class="text-[var(--color-secondary-text)] hover:text-[var(--color-primary-accent)] transition-colors" target="_blank" rel="noopener noreferrer" title="GitHub">
@@ -34,5 +57,35 @@
         {/if}
       </button>
     </nav>
+
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden">
+      <button on:click={() => menuOpen = true} aria-label="Open menu" class="text-[var(--color-primary-text)] p-2 -mr-2">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+    </div>
   </div>
 </header>
+
+<!-- Mobile Menu Panel -->
+{#if menuOpen && isMobile}
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div transition:fly={{ duration: 200, opacity: 0 }} on:click={() => menuOpen = false} class="fixed inset-0 bg-white/30 backdrop-blur-sm z-30" role="button" tabindex="0"></div>
+
+  <div transition:fly={{ duration: 300, x: '100%' }} class="fixed top-0 right-0 h-full w-64 bg-[var(--color-background-card)] shadow-lg z-40">
+    <div class="p-5 flex justify-end">
+        <button on:click={() => menuOpen = false} aria-label="Close menu" class="text-[var(--color-primary-text)] p-2 -mr-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
+    <nav class="flex flex-col text-lg">
+      <a href="https://yaman.pro" on:click={() => menuOpen = false} class="p-4 hover:bg-[var(--color-background-dark-sections)]" target="_blank" rel="noopener noreferrer">yaman.pro</a>
+      <a href="https://yaman.pro/blog" on:click={() => menuOpen = false} class="p-4 hover:bg-[var(--color-background-dark-sections)]" target="_blank" rel="noopener noreferrer">Blog</a>
+      <a href="https://github.com/julianyaman/hn-tech-news" on:click={() => menuOpen = false} class="p-4 hover:bg-[var(--color-background-dark-sections)]" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="/bookmarks" on:click={() => menuOpen = false} class="p-4 hover:bg-[var(--color-background-dark-sections)]">Bookmarks</a>
+      <button on:click={() => { toggleTheme(); menuOpen = false; }} class="p-4 text-left hover:bg-[var(--color-background-dark-sections)] w-full">
+        Toggle Theme
+      </button>
+    </nav>
+  </div>
+{/if}
